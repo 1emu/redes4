@@ -45,13 +45,6 @@ int iProducer::registerAndGetId() {
     return (*result_1).register_and_get_id_result_u.processId;
 }
 
-bool iProducer::isARunningProcessOfTheRequestedType(const ProcessInformation& process, int type) {
-	bool isOfRequestedType = (process.processType == type);
-	bool idNotZero = (process.processId != 0);
-	bool isRunning = (process.running == 1);
-	return (isRunning && idNotZero && type);
-}
-
 ProcessInformation* iProducer::getProcesses(int type) {
 
 	std::string message =  "getting running processes of type = " + Utils::intToString(type);

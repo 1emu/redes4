@@ -19,8 +19,6 @@ private:
     ProcessInformation* getProcesses(int type);
     void showOutcomingOrder(ProductionOrder order);
     void showProcessesResult(get_processes_result* getProcessesResult);
-	bool isARunningProcessOfTheRequestedType(const ProcessInformation& process,
-			int type);
 };
 
 #endif // IPRODUCER_H
