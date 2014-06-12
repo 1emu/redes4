@@ -16,6 +16,8 @@ public:
     iConsumer(int consumerType);
     ProductionOrder receiveFromProducer();
     int getRegisteredId();
+    CLIENT *clnt;
+
 private:
     Queue* ordersQueue;
     int consumerId;
