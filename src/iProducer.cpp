@@ -50,7 +50,7 @@ int iProducer::registerAndGetId() {
 
 ProcessInformation iProducer::getProcesses(int type) {
 
-	std::string message =  "getting running processes of type = " = Utils::intToString(type);
+	std::string message =  "getting running processes of type = " + Utils::intToString(type);
 
 	Process::announce(IPRODUCER, producerId, LIGHTGREEN, message.c_str());
 	ProcessInformation consumerInfo;
