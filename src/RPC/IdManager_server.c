@@ -46,22 +46,34 @@ getprocesses_1_svc(int *argp, struct svc_req *rqstp)
 	ProcessInformation * processesInformation;
 	int processNumber = 0;
 
+	printf("1 init and allocating mem\n");
+
 	processesInformation = (ProcessInformation*) malloc(sizeof(ProcessInformation));
+
+	printf("2 opening file\n");
 	FILE * file = fopen("idManager.dat", "rb");
 	if(file){
+		printf("3 file exists. fread");
 		ProcessInformation processInfo;
 		fread(&processInfo, sizeof (processInfo), 1, file);
 		while(!feof(file)){
+			printf("iterating inside file\n");
 			if(processInfo.processType == tipo && processInfo.running){
+				printf("adding process to processes list\n");
 				processesInformation[processNumber] = processInfo;
 				processNumber++;
+				printf("realloc\n");
 				processesInformation = (ProcessInformation*) realloc(processesInformation, sizeof(ProcessInformation)*(processNumber+1));
 			}
+			printf("another fread\n");
 			fread(&processInfo, sizeof (processInfo), 1, file);
 		}
+		printf("close file\n");
 		fclose(file);
 	}
+	printf("set last process from processesInformation with id 0 \n");
 	processesInformation[processNumber].processId = 0;
+	printf("editing result\n");
 	result.get_processes_result_u.processes.processes_len = processNumber+1;
 	result.get_processes_result_u.processes.processes_val = processesInformation;
 	result.cod_ret = 0;
