@@ -22,9 +22,9 @@ int main(int argc, char** argv) {
 	stringstream ss;
 
 	// Si se ingresan menos argumentos de los necesarios
-	if (argc < 3) {
+	if (argc < 4) {
 		string msg = "Usage ";
-		msg = msg + programName + " <-amountOfProductionOrders> <itemType>\n";
+		msg = msg + programName + " <-amountOfProductionOrders> <itemType> <-amountOfProducers>\n";
 		Colors::writeerr(msg, RED);
 		exit(EXIT_FAILURE);
 	}
@@ -35,12 +35,13 @@ int main(int argc, char** argv) {
 	string name = Process::getNameForProcess(CONSUMER_PROCESS, id);
 
 	int amountOfProductionOrders = atoi(argv[1]);
+	int amountOfProducers = atoi(argv[3]);
 	iConsumer* iface = new iConsumer(itemType);
 	id = iface->getRegisteredId();
 
 	Process::announce(CONSUMER_PROCESS, id, PURPLE, "initializing.");
 
-	for(int i = 0; i < amountOfProductionOrders * AMMOUNT_OF_PRODUCERS; i++){
+	for(int i = 0; i < amountOfProductionOrders * amountOfProducers; i++){
 
 		ProductionOrder productionOrder;
 		productionOrder = iface->receiveFromProducer();
