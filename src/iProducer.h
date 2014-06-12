@@ -17,6 +17,7 @@ private:
     int producerId;
     ProcessInformation getProcesses(int type);
     void showOutcomingOrder(ProductionOrder order);
+    void showProcessesResult(get_processes_result* getProcessesResult);
 };
 
 #endif // IPRODUCER_H

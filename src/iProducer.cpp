@@ -59,9 +59,15 @@ ProcessInformation iProducer::getProcesses(int type) {
         exit (1);
     }
     getProcessesResult = getprocesses_1(&type, clnt);
+    Process::announce(IPRODUCER, producerId, LIGHTGREEN, "got processes result.");
+
     if (getProcessesResult == (get_processes_result *) NULL) {
         clnt_perror (clnt, "call failed");
     }
+    else {
+    	showProcessesResult(getProcessesResult);
+    }
+
     clnt_destroy(clnt);
     int i;
     for(i = 0; (u_int)i < (*getProcessesResult).get_processes_result_u.processes.processes_len; i++){
@@ -76,6 +82,14 @@ void iProducer::showOutcomingOrder(ProductionOrder order){
 	std::string sendingOrderTo = "sending order to ";
 	std::string receiverId_str = Utils::intToString((int)order.receiverId);
 	std::string message = sendingOrderTo + receiverId_str;
+	Process::announce(IPRODUCER, this->producerId, LIGHTGREEN, message.c_str());
+}
+
+void iProducer::showProcessesResult(get_processes_result* getProcessesResult){
+	std::string getProcessesResultStr = "# get processes result : ";
+	std::string cod_ret = Utils::intToString((int)getProcessesResult->cod_ret);
+	std::string processes_len = Utils::intToString((int)getProcessesResult->get_processes_result_u.processes.processes_len);
+	std::string message = getProcessesResultStr + "cod_ret = " + cod_ret + "processes_len = " + processes_len;
 	Process::announce(IPRODUCER, this->producerId, LIGHTGREEN, message.c_str());
 }
 
