@@ -12,25 +12,22 @@ iProducer::iProducer() {
     Process::announce(IPRODUCER, producerId, LIGHTGREEN, "created.");
 }
 
-bool iProducer::sendToConsumers(ProductionOrder order) {
-    ProcessInformation consumerInfo;
+void iProducer::sendToConsumers(ProductionOrder order) {
 
-    consumerInfo = getProcesses(PROCESSOR);
-    order.receiverId = consumerInfo.processId;
-    showOutcomingOrder(order);
-    ordersQueue->send(&order, sizeof(order));
+    ProcessInformation* consumerProcesses;
 
-    consumerInfo = getProcesses(MOTHERBOARD);
-    order.receiverId = consumerInfo.processId;
-    showOutcomingOrder(order);
-    ordersQueue->send(&order, sizeof(order));
+    int consumerType;
+    for (consumerType = PROCESSOR; consumerType < DISK; ++consumerType) {
+    	consumerProcesses = getProcesses(consumerType);
+    	int consumerProcessNumber = 0;
+    	ProcessInformation consumerProcess = consumerProcesses[consumerProcessNumber];
+    	while(consumerProcess.processId != 0){
+    		order.receiverId = consumerProcess.processId;
+			showOutcomingOrder(order);
+			ordersQueue->send(&order, sizeof(order));
+    	}
+	}
 
-    consumerInfo = getProcesses(DISK);
-    order.receiverId = consumerInfo.processId;
-    showOutcomingOrder(order);
-    ordersQueue->send(&order, sizeof(order));
-
-    return true;
 }
 
 int iProducer::registerAndGetId() {
@@ -48,12 +45,18 @@ int iProducer::registerAndGetId() {
     return (*result_1).register_and_get_id_result_u.processId;
 }
 
-ProcessInformation iProducer::getProcesses(int type) {
+bool iProducer::isARunningProcessOfTheRequestedType(const ProcessInformation& process, int type) {
+	bool isOfRequestedType = (process.processType == type);
+	bool idNotZero = (process.processId != 0);
+	bool isRunning = (process.running == 1);
+	return (isRunning && idNotZero && type);
+}
+
+ProcessInformation* iProducer::getProcesses(int type) {
 
 	std::string message =  "getting running processes of type = " + Utils::intToString(type);
 
 	Process::announce(IPRODUCER, producerId, LIGHTGREEN, message.c_str());
-	ProcessInformation consumerInfo;
 
     get_processes_result  *getProcessesResult = getprocesses_1(&type, clnt);
 
@@ -63,22 +66,23 @@ ProcessInformation iProducer::getProcesses(int type) {
         clnt_perror (clnt, "call failed");
     }
     else {
-    	Process::announce(IPRODUCER, producerId, LIGHTGREEN, "inside the else.");
 		std::string cod_ret = Utils::intToString((int)getProcessesResult->cod_ret);
-    	Process::announce(IPRODUCER, producerId, LIGHTGREEN, "cod ret exists.");
     	std::string processes_len = Utils::intToString((int)getProcessesResult->get_processes_result_u.processes.processes_len);
-    	Process::announce(IPRODUCER, producerId, LIGHTGREEN, "process len exists.");
 		showProcessesResult(getProcessesResult);
     }
+	ProcessInformation* runningProcessesOfRequestedType =
+			(*getProcessesResult).get_processes_result_u.processes.processes_val;
 
-    //clnt_destroy(clnt);
-    int i;
+
+    /*int i;
     for(i = 0; (u_int) i < (*getProcessesResult).get_processes_result_u.processes.processes_len; i++){
-        if((*getProcessesResult).get_processes_result_u.processes.processes_val[i].processType == type){
+		ProcessInformation process = (*getProcessesResult).get_processes_result_u.processes.processes_val[i];
+		if (isARunningProcessOfTheRequestedType(process, type)) {
             consumerInfo = (*getProcessesResult).get_processes_result_u.processes.processes_val[i];
         }
-    }
-    return consumerInfo;
+    }*/
+
+    return runningProcessesOfRequestedType;
 }
 
 void iProducer::showOutcomingOrder(ProductionOrder order){

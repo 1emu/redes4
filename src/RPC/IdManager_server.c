@@ -57,18 +57,18 @@ getprocesses_1_svc(int *argp, struct svc_req *rqstp)
 		ProcessInformation processInfo;
 		fread(&processInfo, sizeof (processInfo), 1, file);
 		while(!feof(file)){
-			printf("iterating inside file\n");
+			//printf("iterating inside file\n");
 			if(processInfo.processType == tipo && processInfo.running){
-				printf("adding process to processes list \n");
+				//printf("adding process to processes list \n");
 				processesInformation[processNumber] = processInfo;
 				processNumber++;
-				printf("realloc\n");
+				//printf("realloc\n");
 				processesInformation = (ProcessInformation*) realloc(processesInformation, sizeof(ProcessInformation)*(processNumber+1));
 			}
-			printf("another fread\n");
+			//printf("another fread\n");
 			fread(&processInfo, sizeof (processInfo), 1, file);
 		}
-		printf("close file\n");
+		//printf("close file\n");
 		fclose(file);
 	}
 	printf("set last process from processesInformation with id 0 \n");
