@@ -20,11 +20,13 @@ void iProducer::sendToConsumers(ProductionOrder order) {
     for (consumerType = PROCESSOR; consumerType < DISK; ++consumerType) {
     	consumerProcesses = getProcesses(consumerType);
     	int consumerProcessNumber = 0;
-    	ProcessInformation consumerProcess = consumerProcesses[consumerProcessNumber];
+    	ProcessInformation consumerProcess;
     	while(consumerProcess.processId != 0){
+    		consumerProcess  = consumerProcesses[consumerProcessNumber];
     		order.receiverId = consumerProcess.processId;
 			showOutcomingOrder(order);
 			ordersQueue->send(&order, sizeof(order));
+			consumerProcessNumber++;
     	}
 	}
 
