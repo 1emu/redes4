@@ -60,12 +60,17 @@ ProcessInformation iProducer::getProcesses(int type) {
     }
     getProcessesResult = getprocesses_1(&type, clnt);
     Process::announce(IPRODUCER, producerId, LIGHTGREEN, "got processes result.");
-
+    showProcessesResult(getProcessesResult);
     if (getProcessesResult == (get_processes_result *) NULL) {
         clnt_perror (clnt, "call failed");
     }
     else {
-    	showProcessesResult(getProcessesResult);
+    	Process::announce(IPRODUCER, producerId, LIGHTGREEN, "inside the else.");
+		std::string cod_ret = Utils::intToString((int)getProcessesResult->cod_ret);
+    	Process::announce(IPRODUCER, producerId, LIGHTGREEN, "cod ret exists.");
+    	std::string processes_len = Utils::intToString((int)getProcessesResult->get_processes_result_u.processes.processes_len);
+    	Process::announce(IPRODUCER, producerId, LIGHTGREEN, "process len exists.");
+		showProcessesResult(getProcessesResult);
     }
 
     clnt_destroy(clnt);
