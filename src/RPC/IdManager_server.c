@@ -14,7 +14,7 @@ registerandgetid_1_svc(ProcessInformation *argp, struct svc_req *rqstp)
 	ProcessInformation newProcessInfo = (*argp);
 	newProcessInfo.processId = 1;
 
-	strcpy(newProcessInfo.address, inet_ntoa(rqstp->rq_xprt->xp_raddr.sin_addr));
+	strcpy(newProcessInfo.address, (const char *) inet_ntoa(rqstp->rq_xprt->xp_raddr.sin_addr));
 
 	FILE * file = fopen("idManager.dat", "rb");
 	if(file){

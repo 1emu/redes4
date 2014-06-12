@@ -8,7 +8,7 @@
 #ifndef DEFAULTS_H_
 #define DEFAULTS_H_
 
-#define PATH "/home/jp/workspace/Ejercicio3"
+#define PATH "/home/knoppix/Desktop/"
 
 #define PRODUCTION_ORDERS_QUEUE_ID 301
 
