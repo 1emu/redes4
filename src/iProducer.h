@@ -9,11 +9,12 @@ class iProducer
 public:
     iProducer();
     bool sendToConsumers(ProductionOrder order);
+    int getRegisteredId();
 
 private:
+    int registerAndGetId();
     Queue* ordersQueue;
     int producerId;
-    int registerAndGetId();
     ProcessInformation getProcesses(int type);
     void showOutcomingOrder(ProductionOrder order);
 };

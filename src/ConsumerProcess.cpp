@@ -22,21 +22,22 @@ int main(int argc, char** argv) {
 	stringstream ss;
 
 	// Si se ingresan menos argumentos de los necesarios
-	if (argc < 4) {
+	if (argc < 3) {
 		string msg = "Usage ";
-		msg = msg + programName + " <-id> <-amountOfProductionOrders> <itemType>\n";
+		msg = msg + programName + " <-amountOfProductionOrders> <itemType>\n";
 		Colors::writeerr(msg, RED);
 		exit(EXIT_FAILURE);
 	}
 
-	const char* id_char = argv[1];
-	int id = atoi(id_char);
-	const char* itemType_char = argv[3];
+	int id = 0;
+	const char* itemType_char = argv[2];
 	int itemType = atoi(itemType_char);
 	string name = Process::getNameForProcess(CONSUMER_PROCESS, id);
 
-	int amountOfProductionOrders = atoi(argv[2]);
+	int amountOfProductionOrders = atoi(argv[1]);
 	iConsumer* iface = new iConsumer(id);
+	id = iface->getRegisteredId();
+
 	Process::announce(CONSUMER_PROCESS, id, PURPLE, "initializing.");
 
 	for(int i = 0; i < amountOfProductionOrders * AMMOUNT_OF_PRODUCERS; i++){

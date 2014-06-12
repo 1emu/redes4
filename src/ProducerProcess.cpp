@@ -38,23 +38,23 @@ int main(int argc, char** argv) {
 	stringstream ss;
 
 	// Si se ingresan menos argumentos de los necesarios
-	if (argc < 3) {
+	if (argc < 2) {
 		string msg = "Usage ";
-		msg = msg + programName + " <-id> <-amountOfProductionOrders>\n";
+		msg = msg + programName + " <-amountOfProductionOrders>\n";
 		Colors::writeerr(msg, RED);
 		exit(EXIT_FAILURE);
 	}
 
-	const char* id_char = argv[1];
-	int id = atoi(id_char);
+	int id = 0;
 	string name = Process::getNameForProcess(PRODUCER_PROCESS, id);
     Process::announce(PRODUCER_PROCESS, id, UNDERLINEDGREEN, "initializing.");
 
     srand(time(NULL) * id);
 
-    int amountOfProductionOrders = atoi(argv[2]);
+    int amountOfProductionOrders = atoi(argv[1]);
     Queue::create(PRODUCTION_ORDERS_QUEUE_ID);
     iProducer* iface = new iProducer();
+    id = iface->getRegisteredId();
 
     for(int i = 0; i < amountOfProductionOrders; i++){
 

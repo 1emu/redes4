@@ -15,6 +15,7 @@ class iConsumer
 public:
     iConsumer(int consumerType);
     ProductionOrder receiveFromProducer();
+    int getRegisteredId();
 private:
     Queue* ordersQueue;
     int consumerId;

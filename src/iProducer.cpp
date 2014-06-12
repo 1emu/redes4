@@ -1,10 +1,5 @@
 #include "iProducer.h"
 
-#include <rpc/clnt.h>
-#include <sys/types.h>
-#include <cstdlib>
-
-
 iProducer::iProducer() {
     this->producerId = registerAndGetId();
     ordersQueue = Queue::get(PRODUCTION_ORDERS_QUEUE_ID);
@@ -13,8 +8,6 @@ iProducer::iProducer() {
 
 bool iProducer::sendToConsumers(ProductionOrder order) {
     ProcessInformation consumerInfo;
-
-
 
     consumerInfo = getProcesses(PROCESSOR);
     order.receiverId = consumerInfo.processId;
@@ -84,4 +77,8 @@ void iProducer::showOutcomingOrder(ProductionOrder order){
 	std::string receiverId_str = Utils::intToString((int)order.receiverId);
 	std::string message = sendingOrderTo + receiverId_str;
 	Process::announce(IPRODUCER, this->producerId, LIGHTGREEN, message.c_str());
+}
+
+int iProducer::getRegisteredId() {
+	return this->producerId;
 }

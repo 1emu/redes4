@@ -48,4 +48,6 @@ int iConsumer::registerAndGetId()
     return (*result_1).register_and_get_id_result_u.processId;
 }
 
-
+int iConsumer::getRegisteredId() {
+	return this->consumerId;
+}
