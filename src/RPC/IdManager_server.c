@@ -59,7 +59,7 @@ getprocesses_1_svc(int *argp, struct svc_req *rqstp)
 		while(!feof(file)){
 			printf("iterating inside file\n");
 			if(processInfo.processType == tipo && processInfo.running){
-				printf("adding process to processes list\n");
+				printf("adding process to processes list \n");
 				processesInformation[processNumber] = processInfo;
 				processNumber++;
 				printf("realloc\n");
@@ -107,5 +107,6 @@ unregister_1_svc(int *argp, struct svc_req *rqstp)
 	result.cod_ret = 0;
 
 	printf("IdManager: process with #id %d stopped.\n", id);
+
 	return &result;
 }
