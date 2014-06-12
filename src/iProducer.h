@@ -10,6 +10,7 @@ public:
     iProducer();
     bool sendToConsumers(ProductionOrder order);
     int getRegisteredId();
+    CLIENT *clnt;
 
 private:
     int registerAndGetId();
