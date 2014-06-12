@@ -31,7 +31,7 @@ ProductionOrder iConsumer::receiveFromProducer() {
 int iConsumer::registerAndGetId()
 {
     ProcessInformation consumerInfo;
-    consumerInfo.processType = consumerType;
+    consumerInfo.processType = CONSUMER_TYPE;
 
     Process::announce(ICONSUMER, 0, LIGHTPURPLE, "registering to get an id.");
 

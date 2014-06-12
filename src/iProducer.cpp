@@ -32,7 +32,7 @@ int iProducer::registerAndGetId() {
 	Process::announce(IPRODUCER, 0, LIGHTGREEN, "registering to get an id.");
 
     ProcessInformation producerInfo;
-    producerInfo.processType = PRODUCER;
+    producerInfo.processType = PRODUCER_TYPE;
 
     CLIENT *clnt = clnt_create ("localhost", IDMANAGER, ver1, "udp");
     if (clnt == NULL) {
@@ -49,7 +49,9 @@ int iProducer::registerAndGetId() {
 
 ProcessInformation iProducer::getProcesses(int type) {
 
-	Process::announce(IPRODUCER, producerId, LIGHTGREEN, "getting running consumer processes.");
+	std::string message =  "getting running processes of type = " = Utils::intToString(type);
+
+	Process::announce(IPRODUCER, producerId, LIGHTGREEN, message.c_str());
 	ProcessInformation consumerInfo;
 
     get_processes_result  *getProcessesResult;
@@ -59,8 +61,9 @@ ProcessInformation iProducer::getProcesses(int type) {
         exit (1);
     }
     getProcessesResult = getprocesses_1(&type, clnt);
+
     Process::announce(IPRODUCER, producerId, LIGHTGREEN, "got processes result.");
-    showProcessesResult(getProcessesResult);
+
     if (getProcessesResult == (get_processes_result *) NULL) {
         clnt_perror (clnt, "call failed");
     }
