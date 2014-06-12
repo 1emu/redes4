@@ -17,14 +17,16 @@ void iProducer::sendToConsumers(ProductionOrder order) {
     ProcessInformation* consumerProcesses;
 
     int consumerType;
-    for (consumerType = PROCESSOR; consumerType < DISK; ++consumerType) {
+    for (consumerType = PROCESSOR; consumerType <= DISK; ++consumerType) {
     	consumerProcesses = getProcesses(consumerType);
     	int consumerProcessNumber = 0;
     	ProcessInformation consumerProcess = consumerProcesses[consumerProcessNumber];
     	while(consumerProcess.processId != 0){
     		order.receiverId = consumerProcess.processId;
-			showOutcomingOrder(order);
+			showOutcomingOrder(order, consumerType);
 			ordersQueue->send(&order, sizeof(order));
+            consumerProcessNumber++;
+            consumerProcess = consumerProcesses[consumerProcessNumber];
     	}
 	}
 
@@ -67,21 +69,13 @@ ProcessInformation* iProducer::getProcesses(int type) {
 			(*getProcessesResult).get_processes_result_u.processes.processes_val;
 
 
-    /*int i;
-    for(i = 0; (u_int) i < (*getProcessesResult).get_processes_result_u.processes.processes_len; i++){
-		ProcessInformation process = (*getProcessesResult).get_processes_result_u.processes.processes_val[i];
-		if (isARunningProcessOfTheRequestedType(process, type)) {
-            consumerInfo = (*getProcessesResult).get_processes_result_u.processes.processes_val[i];
-        }
-    }*/
-
     return runningProcessesOfRequestedType;
 }
 
-void iProducer::showOutcomingOrder(ProductionOrder order){
+void iProducer::showOutcomingOrder(ProductionOrder order, int itemType){
 	std::string sendingOrderTo = "sending order to consumer #id ";
 	std::string receiverId_str = Utils::intToString((int)order.receiverId);
-	std::string message = sendingOrderTo + receiverId_str;
+	std::string message = sendingOrderTo + receiverId_str + ", itemType: " + Process::nameForItemType(itemType);
 	Process::announce(IPRODUCER, this->producerId, LIGHTGREEN, message.c_str());
 }
 
