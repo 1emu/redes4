@@ -56,4 +56,10 @@ void Process::createProcesses(std::string processName, unsigned int amountOfProc
 	}
 }
 
+std::string Process::nameForItemType(int itemType) {
+	if(itemType == PROCESSOR) return std::string("PROCESSOR");
+	if(itemType == MOTHERBOARD) return std::string("MOTHERBOARD");
+	if(itemType == DISK) return std::string("DISK");
+	return std::string("UNKNOWN ITEM TYPE");
+}
 

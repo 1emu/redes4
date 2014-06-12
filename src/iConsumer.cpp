@@ -25,19 +25,19 @@ ProductionOrder iConsumer::receiveFromProducer() {
     ProductionOrder receivedOrder;
 
     receivedOrder.receiverId = -1;
-    receivedOrder.amountOfItems[0] = -1;
-    receivedOrder.amountOfItems[1] = -1;
-    receivedOrder.amountOfItems[2] = -1;
+    receivedOrder.amountOfItems[PROCESSOR] = -1;
+    receivedOrder.amountOfItems[MOTHERBOARD] = -1;
+    receivedOrder.amountOfItems[DISK] = -1;
     Process::announce(ICONSUMER, consumerId, LIGHTPURPLE, "receiving order.");
     ordersQueue->receive(&receivedOrder, sizeof(receivedOrder), consumerId);
-
+    Process::announce(ICONSUMER, consumerId, LIGHTPURPLE, "order received.");
     return receivedOrder;
 }
 
 int iConsumer::registerAndGetId()
 {
     ProcessInformation consumerInfo;
-    consumerInfo.processType = CONSUMER_TYPE;
+    consumerInfo.processType = this->consumerType;
 
     Process::announce(ICONSUMER, 0, LIGHTPURPLE, "registering to get an id.");
 

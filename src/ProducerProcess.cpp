@@ -24,9 +24,9 @@ void showProductionOrder(int id, const ProductionOrder& po) {
 ProductionOrder newProductionOrder(){
     ProductionOrder productionOrder;
     productionOrder.receiverId = 0;
-    productionOrder.amountOfItems[0] = Utils::generateRandomNumberBetween(1, 5);
-    productionOrder.amountOfItems[1] = Utils::generateRandomNumberBetween(1, 5);
-    productionOrder.amountOfItems[2] = Utils::generateRandomNumberBetween(1, 5);
+    productionOrder.amountOfItems[PROCESSOR] = Utils::generateRandomNumberBetween(1, 5);
+    productionOrder.amountOfItems[MOTHERBOARD] = Utils::generateRandomNumberBetween(1, 5);
+    productionOrder.amountOfItems[DISK] = Utils::generateRandomNumberBetween(1, 5);
     return productionOrder;
 }
 

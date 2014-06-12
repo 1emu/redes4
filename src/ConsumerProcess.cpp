@@ -12,7 +12,7 @@ using namespace std;
 
 void showProductionOrder(int id, const ProductionOrder& po, int itemType) {
 	string announcement = "Orden de Compra recibida = "
-			+ Utils::intToString(po.amountOfItems[itemType])+ "items inside.";
+			+ Utils::intToString(po.amountOfItems[itemType])+ " " + Process::nameForItemType(itemType) + " items inside.";
 	Process::announce(PRODUCER_PROCESS, id, PURPLE, announcement.c_str());
 }
 
@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
 	string name = Process::getNameForProcess(CONSUMER_PROCESS, id);
 
 	int amountOfProductionOrders = atoi(argv[1]);
-	iConsumer* iface = new iConsumer(id);
+	iConsumer* iface = new iConsumer(itemType);
 	id = iface->getRegisteredId();
 
 	Process::announce(CONSUMER_PROCESS, id, PURPLE, "initializing.");

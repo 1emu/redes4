@@ -24,6 +24,8 @@ public:
 	static int sleepTime();
 
 	static void createProcesses(std::string processName, unsigned int amountOfProcesses);
+
+	static std::string nameForItemType(int itemType);
 };
 
 #endif /* PROCESS_H_ */
