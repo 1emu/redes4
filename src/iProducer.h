@@ -17,10 +17,8 @@ private:
     Queue* ordersQueue;
     int producerId;
     ProcessInformation* getProcesses(int type);
-    void showOutcomingOrder(ProductionOrder order);
+    void showOutcomingOrder(ProductionOrder order, int itemType);
     void showProcessesResult(get_processes_result* getProcessesResult);
-	bool isARunningProcessOfTheRequestedType(const ProcessInformation& process,
-			int type);
 };
 
 #endif // IPRODUCER_H

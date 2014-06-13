@@ -17,16 +17,17 @@ void iProducer::sendToConsumers(ProductionOrder order) {
     ProcessInformation* consumerProcesses;
 
     int consumerType;
-    for (consumerType = PROCESSOR; consumerType < DISK; ++consumerType) {
+    for (consumerType = PROCESSOR; consumerType <= DISK; ++consumerType) {
     	consumerProcesses = getProcesses(consumerType);
     	int consumerProcessNumber = 0;
     	ProcessInformation consumerProcess;
     	while(consumerProcess.processId != 0){
     		consumerProcess  = consumerProcesses[consumerProcessNumber];
     		order.receiverId = consumerProcess.processId;
-			showOutcomingOrder(order);
+			showOutcomingOrder(order, consumerType);
 			ordersQueue->send(&order, sizeof(order));
-			consumerProcessNumber++;
+            consumerProcessNumber++;
+            consumerProcess = consumerProcesses[consumerProcessNumber];
     	}
 	}
 
@@ -45,13 +46,6 @@ int iProducer::registerAndGetId() {
     }
     //clnt_destroy(clnt);
     return (*result_1).register_and_get_id_result_u.processId;
-}
-
-bool iProducer::isARunningProcessOfTheRequestedType(const ProcessInformation& process, int type) {
-	bool isOfRequestedType = (process.processType == type);
-	bool idNotZero = (process.processId != 0);
-	bool isRunning = (process.running == 1);
-	return (isRunning && idNotZero && type);
 }
 
 ProcessInformation* iProducer::getProcesses(int type) {
@@ -76,21 +70,13 @@ ProcessInformation* iProducer::getProcesses(int type) {
 			(*getProcessesResult).get_processes_result_u.processes.processes_val;
 
 
-    /*int i;
-    for(i = 0; (u_int) i < (*getProcessesResult).get_processes_result_u.processes.processes_len; i++){
-		ProcessInformation process = (*getProcessesResult).get_processes_result_u.processes.processes_val[i];
-		if (isARunningProcessOfTheRequestedType(process, type)) {
-            consumerInfo = (*getProcessesResult).get_processes_result_u.processes.processes_val[i];
-        }
-    }*/
-
     return runningProcessesOfRequestedType;
 }
 
-void iProducer::showOutcomingOrder(ProductionOrder order){
+void iProducer::showOutcomingOrder(ProductionOrder order, int itemType){
 	std::string sendingOrderTo = "sending order to consumer #id ";
 	std::string receiverId_str = Utils::intToString((int)order.receiverId);
-	std::string message = sendingOrderTo + receiverId_str;
+	std::string message = sendingOrderTo + receiverId_str + ", itemType: " + Process::nameForItemType(itemType);
 	Process::announce(IPRODUCER, this->producerId, LIGHTGREEN, message.c_str());
 }
 
