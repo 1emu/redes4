@@ -35,7 +35,6 @@ ProductionOrder newProductionOrder();
 int main(int argc, char** argv) {
 
 	char* programName = argv[0];
-	stringstream ss;
 
 	// Si se ingresan menos argumentos de los necesarios
 	if (argc < 2) {
@@ -52,7 +51,7 @@ int main(int argc, char** argv) {
     srand(time(NULL) * id);
 
     int amountOfProductionOrders = atoi(argv[1]);
-    Queue::create(PRODUCTION_ORDERS_QUEUE_ID);
+
     iProducer* iface = new iProducer();
     id = iface->getRegisteredId();
 

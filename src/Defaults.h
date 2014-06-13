@@ -9,6 +9,7 @@
 #define DEFAULTS_H_
 
 #define PATH "/home/"
+#define NETWORK_FILE "network.conf"
 
 #define PRODUCTION_ORDERS_QUEUE_ID 301
 
@@ -28,6 +29,8 @@
 #define CONSUMER_PROCESS "CONSUMER PROCESS"
 #define AMMOUNT_OF_CONSUMERS FIRST_CONSUMER_PROCESS_ID+5
 #define ICONSUMER "i_Consumer"
+
+#define SENDER_PROCESS "SENDER PROCESS"
 
 #define CONFIGURATION_FILE ""
 #define ORDERS_AMOUNT "orders_amount"

@@ -19,7 +19,6 @@ void showProductionOrder(int id, const ProductionOrder& po, int itemType) {
 int main(int argc, char** argv) {
 
 	char* programName = argv[0];
-	stringstream ss;
 
 	// Si se ingresan menos argumentos de los necesarios
 	if (argc < 4) {
