@@ -36,7 +36,7 @@ typedef struct{
     long from;
     processInfo processInformation;
     QueueMessage queueMessage;
-} networkMessage;
+} NetworkMessage;
 
 typedef struct{
     int action;

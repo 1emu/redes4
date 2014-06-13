@@ -10,7 +10,6 @@
 
 #include "Includes.h"
 
-using namespace std;
 
 bool thereAreProducers(){
 	return true;
@@ -20,8 +19,25 @@ bool thereAreProductionOrdersInQueue(){
 	return true;
 }
 
-void sendProductionOrders(){
+void notifySentMessage(const QueueMessage& queueMessage, int id) {
+	std::string msg = "sending from " + queueMessage.senderName + " to "
+			+ queueMessage.receiverName;
+	Process::announce(SENDER_PROCESS, id, UNDERLINEDYELLOW, msg.c_str());
+}
 
+void sendProductionOrders(NetworkMessage networkMessage,
+		QueueMessage queueMessage, int bytes, int id, Queue* queue,
+		Socket* socket) {
+	do {
+		queue->receive((void*) &networkMessage, sizeof(networkMessage),
+				SENDER_TYPE);
+		queueMessage = networkMessage.queueMessage;
+		socket->activate(string(networkMessage.processInformation.address),
+				networkMessage.processInformation.port);
+		bytes = socket->send((char*) &queueMessage, sizeof(queueMessage));
+		notifySentMessage(queueMessage, id);
+		socket->destroy();
+	} while (bytes >= 0);
 }
 
 int main(int argc, char** argv) {
@@ -33,30 +49,19 @@ int main(int argc, char** argv) {
 
     Queue::create(PRODUCTION_ORDERS_QUEUE_ID);
 
-    cola_mensaje cola_msg;
-	red_mensaje red_msg;
+    QueueMessage queueMessage;
+	NetworkMessage networkMessage;
 	int bytes;
 
-	Socket * socket = new Socket(nombre);
-	Cola * cola_de_recepcion = new Cola(COLA_EMISOR, Helper::traductor(COLA_EMISOR));
-	atoi(argv[1]) ? cola_de_recepcion->create() : cola_de_recepcion->get();
-
-	do{
-	   cola_de_recepcion->receive((void*) &red_msg, sizeof(red_msg), EMISOR);
-	   cola_msg = red_msg.msg;
-	   socket->active(string(red_msg.host.address), red_msg.host.port);
-	   bytes = socket->send((char*) &cola_msg, sizeof(cola_msg));
-	   Helper::writeout(nombre,"Envio mensaje a "+string(cola_msg.to_nombre)+" de "+string(cola_msg.from_nombre), COLOR_CYAN);
-	   socket->destroy();
-	}while(bytes >= 0);
+	Socket* socket = new Socket(SENDER_PROCESS);
+	Queue* queue = Queue::create(SENDER_QUEUE_ID);
 
     while(thereAreProducers() || thereAreProductionOrdersInQueue()){
-    	sendProductionOrders();
-        Process::announce(SENDER_PROCESS, id, YELLOW, "production orders sent.");
+		sendProductionOrders(networkMessage, queueMessage, bytes, id, queue, socket);
     	sleep(1);
     }
 
-    Process::announce(PRODUCER_PROCESS, id, UNDERLINEDYELLOW, "finished.");
+    Process::announce(SENDER_PROCESS, id, UNDERLINEDYELLOW, "finished.");
 
     return 0;
 }
