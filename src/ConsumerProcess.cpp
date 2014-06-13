@@ -51,7 +51,9 @@ int main(int argc, char** argv) {
 		sleep(Process::sleepTime());
 	}
 
-	Process::announce(CONSUMER_PROCESS, id, PURPLE, "funcionando.");
+	iface->unregister();
+
+	Process::announce(CONSUMER_PROCESS, id, PURPLE, "finished.");
 
 	return 0;
 }

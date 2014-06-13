@@ -80,6 +80,33 @@ void iProducer::showOutcomingOrder(ProductionOrder order, int itemType){
 	Process::announce(IPRODUCER, this->producerId, LIGHTGREEN, message.c_str());
 }
 
+bool iProducer::consumersAreReady() {
+	ProcessInformation* consumerProcesses;
+	bool consumersAreReady = true;
+	int itemType;
+
+	for (itemType = PROCESSOR; itemType <= DISK; ++itemType) {
+		consumersAreReady = consumersAreReady && thereAreConsumersFor(itemType);
+	}
+
+	return consumersAreReady;
+}
+
+bool iProducer::thereAreConsumersFor(int itemType){
+	bool thereAre = false;
+
+	ProcessInformation* consumerProcesses = getProcesses(itemType);
+	int firstConsumerProcess = 0;
+	ProcessInformation consumerProcess = consumerProcesses[firstConsumerProcess];
+	if(consumerProcess.processId != 0){
+		if(consumerProcess.running > 0 && consumerProcess.processType == itemType){
+			thereAre = true;
+		}
+	}
+
+	return thereAre;
+}
+
 void iProducer::showProcessesResult(get_processes_result* getProcessesResult){
 	std::string getProcessesResultStr = "# get processes result : ";
 	std::string cod_ret = Utils::intToString((int)getProcessesResult->cod_ret);

@@ -9,6 +9,7 @@ class iProducer
 public:
     iProducer();
     void sendToConsumers(ProductionOrder order);
+    bool consumersAreReady();
     int getRegisteredId();
     CLIENT *clnt;
 
@@ -19,6 +20,7 @@ private:
     ProcessInformation* getProcesses(int type);
     void showOutcomingOrder(ProductionOrder order, int itemType);
     void showProcessesResult(get_processes_result* getProcessesResult);
+    bool thereAreConsumersFor(int itemType);
 };
 
 #endif // IPRODUCER_H

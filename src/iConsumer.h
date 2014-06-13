@@ -16,6 +16,7 @@ public:
     iConsumer(int consumerType);
     ProductionOrder receiveFromProducer();
     int getRegisteredId();
+    void unregister();
     CLIENT *clnt;
 
 private:

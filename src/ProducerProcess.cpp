@@ -56,6 +56,14 @@ int main(int argc, char** argv) {
     iProducer* iface = new iProducer();
     id = iface->getRegisteredId();
 
+    // Wait for at least one consumer for each item type.
+
+    bool consumersAreGettingReady = true;
+    while(consumersAreGettingReady){
+    	consumersAreGettingReady = ! iface->consumersAreReady();
+    	sleep(1);
+    }
+
     for(int i = 0; i < amountOfProductionOrders; i++){
 
         ProductionOrder productionOrder = newProductionOrder();

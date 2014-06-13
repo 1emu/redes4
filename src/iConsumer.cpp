@@ -52,3 +52,10 @@ int iConsumer::registerAndGetId()
 int iConsumer::getRegisteredId() {
 	return this->consumerId;
 }
+
+void iConsumer::unregister() {
+	unregister_result  *result_3 = unregister_1(&(this->consumerId), clnt);
+	if (result_3 == (unregister_result *) NULL) {
+			clnt_perror (clnt, "call failed");
+	}
+}
