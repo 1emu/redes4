@@ -9,6 +9,7 @@
  */
 
 #include "Includes.h"
+#include "Socket.h"
 
 
 bool thereAreProducers(){
@@ -20,20 +21,20 @@ bool thereAreProductionOrdersInQueue(){
 }
 
 void notifySentMessage(const QueueMessage& queueMessage, int id) {
-	std::string msg = "sending from " + queueMessage.senderName + " to "
-			+ queueMessage.receiverName;
+	std::string msg = "sending from ";
+	msg += string(queueMessage.senderName) + " to " + string(queueMessage.receiverName);
 	Process::announce(SENDER_PROCESS, id, UNDERLINEDYELLOW, msg.c_str());
 }
 
-void sendProductionOrders(NetworkMessage networkMessage,
-		QueueMessage queueMessage, int bytes, int id, Queue* queue,
-		Socket* socket) {
+void sendProductionOrders(NetworkMessage networkMessage, QueueMessage queueMessage, int bytes, int id, Queue* queue, Socket* socket) {
 	do {
 		queue->receive((void*) &networkMessage, sizeof(networkMessage),
 				SENDER_TYPE);
 		queueMessage = networkMessage.queueMessage;
-		socket->activate(string(networkMessage.processInformation.address),
-				networkMessage.processInformation.port);
+		int result = socket->activate(string(networkMessage.processInformation.address),	networkMessage.processInformation.port);
+		if(result != 0) {
+			Process::announce(SENDER_PROCESS, id, UNDERLINEDRED, "error on socket when sending production orders.");
+		}
 		bytes = socket->send((char*) &queueMessage, sizeof(queueMessage));
 		notifySentMessage(queueMessage, id);
 		socket->destroy();

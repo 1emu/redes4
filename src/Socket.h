@@ -22,9 +22,8 @@ private:
     Configuration* configuration;
 
 public:
-	Socket();
-	virtual ~Socket();
     Socket(string localName);
+    Socket(int socketFd, struct sockaddr_in localAddress, struct sockaddr_in remoteAddress, string owner);
     int fileDescriptor();
     in_addr getRemoteAddress();
     in_addr getLocalAddress();
@@ -36,7 +35,6 @@ public:
     int destroy();
 
 private:
-    Socket(int socketFd, struct sockaddr_in localAddress, struct sockaddr_in remoteAddress, string owner);
 	void setConfigurationFile(string fileName);
 	void setLocalAddress(unsigned short port);
 	void notifyErrorOn(string failingMethod);

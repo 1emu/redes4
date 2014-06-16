@@ -6,10 +6,11 @@
  */
 
 #include "Includes.h"
-
+#include "Socket.h"
+ 
 void notifyReceivedMessage(const QueueMessage& queueMessage, int id) {
-	std::string msg = "receiving from " + queueMessage.senderName + " to "
-			+ queueMessage.receiverName;
+	std::string msg = "receiving from ";
+	msg += string(queueMessage.senderName) + " to "	+ string(queueMessage.receiverName);
 	Process::announce(RECEIVER_PROCESS, id, UNDERLINEDYELLOW, msg.c_str());
 }
 

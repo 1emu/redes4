@@ -5,7 +5,7 @@ DFLAGS = -Wall -g
 CFLAGS = $(DFLAGS) $(OFLAGS) $(LFLAGS)
 
 PROGS = SenderProcess ReceiverProcess ProducerProcess ConsumerProcess Terminator
-OBJS = Configuration.o Utils.o Colors.o Process.o Queue.o iProducer.o iConsumer.o Socket.o 
+OBJS = Configuration.o Socket.o Utils.o Colors.o Process.o Queue.o iProducer.o iConsumer.o 
 RPC = RPC/IdManager_clnt.o RPC/IdManager_xdr.o
 
 all: $(PROGS) clean

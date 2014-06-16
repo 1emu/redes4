@@ -50,7 +50,7 @@ void Socket::setLocalAddress(unsigned short port) {
 
 int Socket::passivate(unsigned short port){
 	string backlogStr = configuration->get("backlog");
-    backlog = 
+    int backlog = atoi(backlogStr.c_str());
     this->port = port;
 
     setLocalAddress(port);
