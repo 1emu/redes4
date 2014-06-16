@@ -4,8 +4,8 @@ DFLAGS = -Wall -g
 #LFLAGS = -lpthread
 CFLAGS = $(DFLAGS) $(OFLAGS) $(LFLAGS)
 
-PROGS = ProducerProcess ConsumerProcess Terminator
-OBJS = Utils.o Colors.o Process.o Queue.o iProducer.o iConsumer.o
+PROGS = SenderProcess ReceiverProcess ProducerProcess ConsumerProcess Terminator
+OBJS = Configuration.o Utils.o Colors.o Process.o Queue.o iProducer.o iConsumer.o Socket.o 
 RPC = RPC/IdManager_clnt.o RPC/IdManager_xdr.o
 
 all: $(PROGS) clean

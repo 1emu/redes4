@@ -15,7 +15,7 @@ using namespace std;
 class Configuration {
 private:
     map<string, string> configuration;
-    const int MAX_LINE_LENGTH = 256;
+    static const int MAX_LINE_LENGTH = 256;
 
 public:
 	Configuration(string fileName);

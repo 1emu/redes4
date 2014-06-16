@@ -7,6 +7,8 @@
 
 #include "Configuration.h"
 
+using namespace std;
+
 void Configuration::addConfiguration(const string& key, const string& value) {
 	this->configuration.insert(pair<string, string>(key, value));
 }
@@ -32,10 +34,6 @@ Configuration::Configuration(string fileName){
 		}
 		free(row);
 	}
-}
-
-Configuration::~Configuration() {
-	// TODO Auto-generated destructor stub
 }
 
 string Configuration::get(string key){

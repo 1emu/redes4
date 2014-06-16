@@ -29,16 +29,16 @@ int Socket::fileDescriptor(){
     return socketFd;
 }
 
-in_addr Socket::remoteAddress(){
+in_addr Socket::getRemoteAddress(){
     return remoteAddress.sin_addr;
 }
 
-in_addr Socket::localAddress(){
+in_addr Socket::getLocalAddress(){
     return localAddress.sin_addr;
 }
 
 void Socket::setConfigurationFile(string fileName) {
-	Configuration(fileName);
+	this->configuration = new Configuration(fileName);
 }
 
 void Socket::setLocalAddress(unsigned short port) {
@@ -49,7 +49,8 @@ void Socket::setLocalAddress(unsigned short port) {
 }
 
 int Socket::passivate(unsigned short port){
-	int backlog = configuration->get("backlog");
+	string backlogStr = configuration->get("backlog");
+    backlog = 
     this->port = port;
 
     setLocalAddress(port);
@@ -66,6 +67,7 @@ int Socket::passivate(unsigned short port){
         notifyErrorOn("listen");
         return -1;
     }
+
     return 0;
 }
 
