@@ -24,6 +24,7 @@ void iProducer::sendToConsumers(ProductionOrder order) {
     	while(consumerProcess.processId != 0){
     		order.receiverId = consumerProcess.processId;
 			showOutcomingOrder(order, consumerType);
+			buildNetworkMessage(order, consumerProcess);
 			ordersQueue->send(&order, sizeof(order));
             consumerProcessNumber++;
             consumerProcess = consumerProcesses[consumerProcessNumber];
