@@ -8,7 +8,7 @@ iProducer::iProducer() {
 		exit (1);
 	}
     this->producerId = registerAndGetId();
-    ordersQueue = Queue::get(SENDER_QUEUE_ID);
+    senderQueue = Queue::get(SENDER_QUEUE_ID);
     Process::announce(IPRODUCER, producerId, LIGHTGREEN, "created.");
 }
 
@@ -23,9 +23,12 @@ void iProducer::sendToConsumers(ProductionOrder order) {
         ProcessInformation consumerProcess = consumerProcesses[consumerProcessNumber];
     	while(consumerProcess.processId != 0){
     		order.receiverId = consumerProcess.processId;
-			showOutcomingOrder(order, consumerType);
-			buildNetworkMessage(order, consumerProcess);
-			ordersQueue->send(&order, sizeof(order));
+			showOutgoingOrder(order, consumerType);
+			QueueMessage queueMessage = buildQueueMessage(order);
+			NetworkMessage networkMessage = buildNetworkMessage(queueMessage,
+					consumerProcess);
+
+			senderQueue->send(&networkMessage, sizeof(networkMessage));
             consumerProcessNumber++;
             consumerProcess = consumerProcesses[consumerProcessNumber];
     	}
@@ -73,7 +76,7 @@ ProcessInformation* iProducer::getProcesses(int type) {
     return runningProcessesOfRequestedType;
 }
 
-void iProducer::showOutcomingOrder(ProductionOrder order, int itemType){
+void iProducer::showOutgoingOrder(ProductionOrder order, int itemType){
 	std::string sendingOrderTo = "sending order to consumer #id ";
 	std::string receiverId_str = Utils::intToString((int)order.receiverId);
 	std::string message = sendingOrderTo + receiverId_str + ", itemType: " + Process::nameForItemType(itemType);
@@ -81,7 +84,6 @@ void iProducer::showOutcomingOrder(ProductionOrder order, int itemType){
 }
 
 bool iProducer::consumersAreReady() {
-	ProcessInformation* consumerProcesses;
 	bool consumersAreReady = true;
 	int itemType;
 
@@ -117,4 +119,48 @@ void iProducer::showProcessesResult(get_processes_result* getProcessesResult){
 
 int iProducer::getRegisteredId() {
 	return this->producerId;
+}
+
+NetworkMessage iProducer::buildNetworkMessage(QueueMessage queueMessage,
+		ProcessInformation consumerProcess) {
+	NetworkMessage networkMessage = {};
+	networkMessage.to = consumerProcess.processId;
+	networkMessage.from = this->producerId;
+	networkMessage.processInformation = consumerProcess;
+	networkMessage.queueMessage = queueMessage;
+	return networkMessage;
+}
+
+void iProducer::showOutgoingNetworkMessage(NetworkMessage networkMessage) {
+	std::string msg = "Network message built: \n";
+	msg += string("- from: ") + Utils::intToString(networkMessage.from) + "\n";
+	msg += string("- to: ") + Utils::intToString(networkMessage.to) + "\n";
+	Process::announce(IPRODUCER, this->producerId, LIGHTGREEN, msg.c_str());
+}
+
+QueueMessage iProducer::buildQueueMessage(ProductionOrder order) {
+	QueueMessage queueMessage = {};
+	queueMessage.action = PRODUCE;
+	queueMessage.amount = 2;
+	queueMessage.fromId = this->producerId;
+	queueMessage.orden = 1;
+	queueMessage.receiver = (long) 1;
+	strcpy(queueMessage.receiverName, "receiverName");
+	queueMessage.sender = (long) 1;
+	queueMessage.senderClass = 1;
+	strcpy(queueMessage.senderName, "senderName");
+	return queueMessage;
+}
+
+void iProducer::showOutgoingQueueMessage(QueueMessage queueMessage) {
+	std::string msg = "Queue message built: \n";
+	msg += string("- action: ") + Utils::intToString(queueMessage.action) + "\n";
+	msg += string("- amount: ") + Utils::intToString(queueMessage.amount) + "\n";
+	msg += string("- fromId: ") + Utils::intToString(queueMessage.fromId) + "\n";
+	msg += string("- receiver: ") +Utils::intToString(queueMessage.receiver) + "\n";
+	msg += string("- receiverName: ") + queueMessage.receiverName + "\n";
+	msg += string("- sender: ") + Utils::intToString(queueMessage.sender) + "\n";
+	msg += string("- senderClass: ") + Utils::intToString(queueMessage.senderClass) + "\n";
+	msg += string("- senderName: ") + queueMessage.senderName + "\n";
+	Process::announce(IPRODUCER, this->producerId, LIGHTGREEN, msg.c_str());
 }

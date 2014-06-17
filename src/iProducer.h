@@ -15,12 +15,16 @@ public:
 
 private:
     int registerAndGetId();
-    Queue* ordersQueue;
+    Queue* senderQueue;
     int producerId;
     ProcessInformation* getProcesses(int type);
-    void showOutcomingOrder(ProductionOrder order, int itemType);
+    void showOutgoingOrder(ProductionOrder order, int itemType);
     void showProcessesResult(get_processes_result* getProcessesResult);
     bool thereAreConsumersFor(int itemType);
+    NetworkMessage buildNetworkMessage(QueueMessage queueMessage, ProcessInformation consumerProcess);
+    void showOutgoingNetworkMessage(NetworkMessage networkMessage);
+    QueueMessage buildQueueMessage(ProductionOrder order);
+    void showOutgoingQueueMessage(QueueMessage queueMessage);
 };
 
 #endif // IPRODUCER_H

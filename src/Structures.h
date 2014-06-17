@@ -11,6 +11,8 @@
 #define ADDRESSES_LENGTH 256
 #define NAMES_LENGTH 32
 
+#include "RPC/IdManager.h"
+
 typedef struct{
     long receiver;
     long sender;
@@ -24,23 +26,15 @@ typedef struct{
 } QueueMessage;
 
 typedef struct{
-    char address[ADDRESSES_LENGTH];
-    unsigned short port;
-    int processType;
-    int id;
-    bool available;
-} processInfo;
-
-typedef struct{
     long to;
     long from;
-    processInfo processInformation;
+    ProcessInformation processInformation;
     QueueMessage queueMessage;
 } NetworkMessage;
 
 typedef struct{
     int action;
-    processInfo processInformation;
+    ProcessInformation processInformation;
 } idControllerMessage;
 
 typedef struct{
