@@ -7,7 +7,7 @@
 
 #include "Includes.h"
 #include "Socket.h"
- 
+
 void notifyReceivedMessage(const QueueMessage& queueMessage, int id) {
 	std::string msg = "receiving from ";
 	msg += string(queueMessage.senderName) + " to "	+ string(queueMessage.receiverName);
@@ -18,10 +18,18 @@ int main(int argc, char** argv) {
 
 	char* programName = argv[0];
 
+	// Si se ingresan menos argumentos de los necesarios
+	if (argc < 2) {
+		string msg = "Usage ";
+		msg = msg + programName + " <-use>\n";
+		Colors::writeerr(msg, RED);
+		exit(EXIT_FAILURE);
+	}
+
 	int id = 0;
     Process::announce(RECEIVER_PROCESS, id, UNDERLINEDYELLOW, "initializing.");
 
-    Queue::create(PRODUCTION_ORDERS_QUEUE_ID);
+    //Queue::create(PRODUCTION_ORDERS_QUEUE_ID);
 
     QueueMessage queueMessage;
 	NetworkMessage networkMessage;

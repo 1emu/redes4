@@ -8,7 +8,7 @@ iProducer::iProducer() {
 		exit (1);
 	}
     this->producerId = registerAndGetId();
-    ordersQueue = Queue::get(PRODUCTION_ORDERS_QUEUE_ID);
+    ordersQueue = Queue::get(SENDER_QUEUE_ID);
     Process::announce(IPRODUCER, producerId, LIGHTGREEN, "created.");
 }
 

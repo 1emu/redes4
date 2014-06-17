@@ -16,7 +16,7 @@ iConsumer::iConsumer(int consumerType)
 	}
     this->consumerType = consumerType;
     this->consumerId = registerAndGetId();
-    ordersQueue = Queue::get(PRODUCTION_ORDERS_QUEUE_ID);
+    ordersQueue = Queue::get(RECEIVER_QUEUE_ID);
     // create connection with client
     Process::announce(ICONSUMER, consumerId, LIGHTPURPLE, "created.");
 }
