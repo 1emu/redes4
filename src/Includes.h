@@ -35,9 +35,10 @@
 #include <signal.h>
 #include <time.h>
 #include "Colors.h"
-#include "Configuration.h"
+#include "Defaults.h"
 #include "Process.h"
 #include "Structures.h"
+#include "Utils.h"
 #include "Queue.h"
 #include "RPC/IdManager.h"
 

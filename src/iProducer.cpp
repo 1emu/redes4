@@ -1,5 +1,7 @@
 #include "iProducer.h"
 
+using namespace std;
+
 iProducer::iProducer() {
     // create connection with client
     this->clnt = clnt_create("localhost", IDMANAGER, ver1, "tcp");
@@ -53,7 +55,7 @@ int iProducer::registerAndGetId() {
 
 ProcessInformation* iProducer::getProcesses(int type) {
 
-	std::string message =  "getting running processes of type = " + Utils::intToString(type);
+	string message =  "getting running processes of type = " + Utils::intToString(type);
 
 	Process::announce(IPRODUCER, producerId, LIGHTGREEN, message.c_str());
 
@@ -65,8 +67,8 @@ ProcessInformation* iProducer::getProcesses(int type) {
         clnt_perror (clnt, "call failed");
     }
     else {
-		std::string cod_ret = Utils::intToString((int)getProcessesResult->cod_ret);
-    	std::string processes_len = Utils::intToString((int)getProcessesResult->get_processes_result_u.processes.processes_len);
+		string cod_ret = Utils::intToString((int)getProcessesResult->cod_ret);
+    	string processes_len = Utils::intToString((int)getProcessesResult->get_processes_result_u.processes.processes_len);
 		showProcessesResult(getProcessesResult);
     }
 	ProcessInformation* runningProcessesOfRequestedType =
@@ -77,9 +79,9 @@ ProcessInformation* iProducer::getProcesses(int type) {
 }
 
 void iProducer::showOutgoingOrder(ProductionOrder order, int itemType){
-	std::string sendingOrderTo = "sending order to consumer #id ";
-	std::string receiverId_str = Utils::intToString((int)order.receiverId);
-	std::string message = sendingOrderTo + receiverId_str + ", itemType: " + Process::nameForItemType(itemType);
+	string sendingOrderTo = "sending order to consumer #id ";
+	string receiverId_str = Utils::intToString((int)order.receiverId);
+	string message = sendingOrderTo + receiverId_str + ", itemType: " + Process::nameForItemType(itemType);
 	Process::announce(IPRODUCER, this->producerId, LIGHTGREEN, message.c_str());
 }
 
@@ -110,10 +112,10 @@ bool iProducer::thereAreConsumersFor(int itemType){
 }
 
 void iProducer::showProcessesResult(get_processes_result* getProcessesResult){
-	std::string getProcessesResultStr = "# get processes result : ";
-	std::string cod_ret = Utils::intToString((int)getProcessesResult->cod_ret);
-	std::string processes_len = Utils::intToString((int)getProcessesResult->get_processes_result_u.processes.processes_len);
-	std::string message = getProcessesResultStr + "cod_ret = " + cod_ret + " processes_len = " + processes_len;
+	string getProcessesResultStr = "# get processes result : ";
+	string cod_ret = Utils::intToString((int)getProcessesResult->cod_ret);
+	string processes_len = Utils::intToString((int)getProcessesResult->get_processes_result_u.processes.processes_len);
+	string message = getProcessesResultStr + "cod_ret = " + cod_ret + " processes_len = " + processes_len;
 	Process::announce(IPRODUCER, this->producerId, LIGHTGREEN, message.c_str());
 }
 
@@ -132,14 +134,14 @@ NetworkMessage iProducer::buildNetworkMessage(QueueMessage queueMessage,
 }
 
 void iProducer::showOutgoingNetworkMessage(NetworkMessage networkMessage) {
-	std::string msg = "Network message built: \n";
+	string msg = "Network message built: \n";
 	msg += string("- from: ") + Utils::intToString(networkMessage.from) + "\n";
 	msg += string("- to: ") + Utils::intToString(networkMessage.to) + "\n";
 	Process::announce(IPRODUCER, this->producerId, LIGHTGREEN, msg.c_str());
 }
 
 QueueMessage iProducer::buildQueueMessage(ProductionOrder order) {
-	QueueMessage queueMessage = {};
+	QueueMessage queueMessage;
 	queueMessage.action = PRODUCE;
 	queueMessage.amount = 2;
 	queueMessage.fromId = this->producerId;
@@ -153,7 +155,7 @@ QueueMessage iProducer::buildQueueMessage(ProductionOrder order) {
 }
 
 void iProducer::showOutgoingQueueMessage(QueueMessage queueMessage) {
-	std::string msg = "Queue message built: \n";
+	string msg = "Queue message built: \n";
 	msg += string("- action: ") + Utils::intToString(queueMessage.action) + "\n";
 	msg += string("- amount: ") + Utils::intToString(queueMessage.amount) + "\n";
 	msg += string("- fromId: ") + Utils::intToString(queueMessage.fromId) + "\n";

@@ -9,9 +9,8 @@
 #define PROCESS_H_
 
 #include "Includes.h"
-#include "Utils.h"
-#include "Defaults.h"
-
+#include "Structures.h"
+ 
 class Process {
 public:
 	Process();
@@ -26,6 +25,11 @@ public:
 	static void createProcesses(std::string processName, unsigned int amountOfProcesses);
 
 	static std::string nameForItemType(int itemType);
+
+	static std::string showQueueMessage(QueueMessage queueMessage);
+
+	static std::string showNetworkMessage(NetworkMessage networkMessage);
+
 };
 
 #endif /* PROCESS_H_ */

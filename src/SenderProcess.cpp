@@ -26,12 +26,21 @@ void notifySentMessage(const QueueMessage& queueMessage, int id) {
 	Process::announce(SENDER_PROCESS, id, UNDERLINEDYELLOW, msg.c_str());
 }
 
-void sendProductionOrders(NetworkMessage networkMessage, QueueMessage queueMessage, int bytes, int id, Queue* queue, Socket* socket) {
+void sendProductionOrders(int id, Queue* queue, Socket* socket) {
+	
+	NetworkMessage networkMessage;
+	QueueMessage queueMessage;
+	int bytes = 0;
+
 	do {
 		queue->receive((void*) &networkMessage, sizeof(networkMessage),
 				SENDER_TYPE);
 		queueMessage = networkMessage.queueMessage;
-		int result = socket->activate(string(networkMessage.processInformation.address),	networkMessage.processInformation.port);
+		
+		Process::announce(SENDER_PROCESS, id, UNDERLINEDRED, Process::showQueueMessage(queueMessage).c_str());
+
+		int result = socket->activate(string(networkMessage.processInformation.address),
+			networkMessage.processInformation.port);
 		if(result != 0) {
 			Process::announce(SENDER_PROCESS, id, UNDERLINEDRED, "error on socket when sending production orders.");
 		}
@@ -50,15 +59,13 @@ int main(int argc, char** argv) {
 
     Queue::create(PRODUCTION_ORDERS_QUEUE_ID);
 
-    QueueMessage queueMessage;
-	NetworkMessage networkMessage;
-	int bytes;
+
 
 	Socket* socket = new Socket(SENDER_PROCESS);
 	Queue* queue = Queue::create(SENDER_QUEUE_ID);
 
     while(thereAreProducers() || thereAreProductionOrdersInQueue()){
-		sendProductionOrders(networkMessage, queueMessage, bytes, id, queue, socket);
+		sendProductionOrders(id, queue, socket);
     	sleep(1);
     }
 

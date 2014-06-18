@@ -153,9 +153,9 @@ int Socket::destroy(){
 
 std::string Socket::socketInformation() {
 	std::string message = "Socket: \n";
-	message += "Local Name: " + this->localName + "Local Address: "
+	message += "Local Name: " + this->localName + " Local Address: "
 			+ Utils::intToString(this->localAddress.sin_addr.s_addr) + "\n";
-	message += "Remote Name: " + this->remoteName + "Remote Address: "
+	message += "Remote Name: " + this->remoteName + " Remote Address: "
 			+ Utils::intToString(this->remoteAddress.sin_addr.s_addr) + "\n";
 	return message;
 }

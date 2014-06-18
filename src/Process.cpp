@@ -7,15 +7,16 @@
 
 #include "Process.h"
 
+using namespace std;
 
-std::string Process::getNameForProcess(const char* process_type, int id){
-	std::string processName = process_type;
+string Process::getNameForProcess(const char* process_type, int id){
+	string processName = process_type;
 	processName = processName + " #" + Utils::intToString(id);
 	return processName;
 }
 
 void Process::announce(const char* processType, int id, const char* color, const char* msg){
-	std::string processMessage = Process::getNameForProcess(processType, id) + ": "
+	string processMessage = Process::getNameForProcess(processType, id) + ": "
 			+ msg;
 	Colors::writeout(processMessage, color);
 }
@@ -24,17 +25,17 @@ int Process::sleepTime(){
 	return Utils::generateRandomNumberBetween(SLEEP_TIME_MIN, SLEEP_TIME_MAX);
 }
 
-void Process::createProcesses(std::string processName, unsigned int amountOfProcesses) {
+void Process::createProcesses(string processName, unsigned int amountOfProcesses) {
 	pid_t child; // child processes id's
 
 	/* Prepare strings for the process creation functions */
-	std::string excecString = "./";
+	string excecString = "./";
 	excecString = excecString + processName;
 
-	std::string perrorExeclpString = " - error on execlp: ";
+	string perrorExeclpString = " - error on execlp: ";
 	perrorExeclpString = processName + perrorExeclpString;
 
-	std::string perrorForkString = " - error on fork: ";
+	string perrorForkString = " - error on fork: ";
 	perrorForkString = processName + perrorForkString;
 
 	/* Create child processes */
@@ -42,7 +43,7 @@ void Process::createProcesses(std::string processName, unsigned int amountOfProc
 			producerProcessNumber <= amountOfProcesses; producerProcessNumber++) {
 		child = fork();
 		if (child == 0) {
-			std::string processCreated = processName + " created";
+			string processCreated = processName + " created";
 			Process::announce(processName.c_str(), producerProcessNumber, LIGHTBLUE, processCreated.c_str());
 			execlp( excecString.c_str(),
 					processName.c_str(),
@@ -56,10 +57,29 @@ void Process::createProcesses(std::string processName, unsigned int amountOfProc
 	}
 }
 
-std::string Process::nameForItemType(int itemType) {
-	if(itemType == PROCESSOR) return std::string("PROCESSOR");
-	if(itemType == MOTHERBOARD) return std::string("MOTHERBOARD");
-	if(itemType == DISK) return std::string("DISK");
-	return std::string("UNKNOWN ITEM TYPE");
+string Process::nameForItemType(int itemType) {
+	if(itemType == PROCESSOR) return string("PROCESSOR");
+	if(itemType == MOTHERBOARD) return string("MOTHERBOARD");
+	if(itemType == DISK) return string("DISK");
+	return string("UNKNOWN ITEM TYPE");
 }
 
+string Process::showQueueMessage(QueueMessage queueMessage) {
+	string msg = "Queue message built: \n";
+	msg += string("- action: ") + Utils::intToString(queueMessage.action) + "\n";
+	msg += string("- amount: ") + Utils::intToString(queueMessage.amount) + "\n";
+	msg += string("- fromId: ") + Utils::intToString(queueMessage.fromId) + "\n";
+	msg += string("- receiver: ") +Utils::intToString(queueMessage.receiver) + "\n";
+	msg += string("- receiverName: ") + queueMessage.receiverName + "\n";
+	msg += string("- sender: ") + Utils::intToString(queueMessage.sender) + "\n";
+	msg += string("- senderClass: ") + Utils::intToString(queueMessage.senderClass) + "\n";
+	msg += string("- senderName: ") + queueMessage.senderName + "\n";
+	return msg;
+}
+
+string Process::showNetworkMessage(NetworkMessage networkMessage) {
+	string msg = "Network message built: \n";
+	msg += string("- from: ") + Utils::intToString(networkMessage.from) + "\n";
+	msg += string("- to: ") + Utils::intToString(networkMessage.to) + "\n";
+	return msg;
+}

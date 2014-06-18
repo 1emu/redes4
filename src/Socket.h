@@ -9,7 +9,7 @@
 #define SOCKET_H_
 
 #include "Includes.h"
-
+#include "Configuration.h"
 using namespace std;
 
 class Socket {
