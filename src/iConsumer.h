@@ -9,6 +9,7 @@
 #define ICONSUMER_H_
 
 #include "Includes.h"
+#include "Configuration.h"
 
 class iConsumer
 {
@@ -23,6 +24,7 @@ private:
     Queue* ordersQueue;
     int consumerId;
     int consumerType;
+    int receiverQueueId;
     int registerAndGetId();
 };
 

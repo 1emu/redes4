@@ -44,6 +44,14 @@ string Configuration::get(string key){
 	return "";
 }
 
+int Configuration::getInt(string key){
+	map<string, string>::iterator i = configuration.find(key);
+		if(i != configuration.end()){
+			return atoi((i->second).c_str());
+		}
+	return 0;
+}
+
 string Configuration::trim(string stringToBeTrimmed){
 	string::iterator lend, rbegin;
 	string::reverse_iterator rrbegin;

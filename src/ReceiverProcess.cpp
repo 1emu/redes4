@@ -31,13 +31,22 @@ int main(int argc, char** argv) {
 
     //Queue::create(PRODUCTION_ORDERS_QUEUE_ID);
 	ProductionOrder productionOrder;
-	NetworkMessage networkMessage;
 	int bytes;
 
 	Socket* socket = new Socket(RECEIVER_PROCESS);
-	Queue* queue = Queue::create(RECEIVER_QUEUE_ID);
 
-	socket->passivate(RECEIVER_LISTENING_PORT);
+	Configuration* configuration = new Configuration(CONFIGURATION_FILE);
+	int receiverQueueId = configuration->getInt(RECEIVER_QUEUE_ID);
+	string msg = "Reading configuration file --> RECEIVER_QUEUE_ID: ";
+	msg = msg + Utils::intToString(receiverQueueId);
+	Process::announce(RECEIVER_PROCESS, id, CYAN, msg.c_str());
+	Queue* queue = Queue::create(receiverQueueId);
+
+	int receiverListeningPort = configuration->getInt(RECEIVER_LISTENING_PORT);
+	msg = "Reading configuration file --> RECEIVER_LISTENING_PORT: ";
+	msg = msg + Utils::intToString(receiverListeningPort);
+	Process::announce(RECEIVER_PROCESS, id, CYAN, msg.c_str());
+	socket->passivate(receiverListeningPort);
 
 	Socket* newSocket;
 	while ( (newSocket = socket->acceptOrCreateNew()) != NULL) {

@@ -20,6 +20,7 @@ private:
 public:
 	Configuration(string fileName);
     string get(string key);
+    int getInt(string key);
 
 private:
     void read(string fileName);

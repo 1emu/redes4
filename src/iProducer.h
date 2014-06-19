@@ -2,7 +2,7 @@
 #define IPRODUCER_H
 
 #include "Includes.h"
-
+#include "Configuration.h"
 
 class iProducer
 {
@@ -16,6 +16,7 @@ public:
 private:
     int registerAndGetId();
     Queue* senderQueue;
+    int senderQueueId;
     int producerId;
     ProcessInformation* getProcesses(int type);
     void showOutgoingOrder(ProductionOrder order, int itemType);

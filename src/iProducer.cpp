@@ -10,7 +10,14 @@ iProducer::iProducer() {
 		exit (1);
 	}
     this->producerId = registerAndGetId();
-    senderQueue = Queue::get(SENDER_QUEUE_ID);
+
+    Configuration* configuration = new Configuration(CONFIGURATION_FILE);
+
+   	this->senderQueueId = configuration->getInt(SENDER_QUEUE_ID);
+   	string msg = "Reading configuration file --> SENDER_QUEUE_ID: ";
+   	Process::announce(RECEIVER_PROCESS, producerId, CYAN, (msg + Utils::intToString(senderQueueId)).c_str());
+
+    senderQueue = Queue::get(senderQueueId);
     Process::announce(IPRODUCER, producerId, LIGHTGREEN, "created.");
 }
 
@@ -43,7 +50,11 @@ int iProducer::registerAndGetId() {
 	Process::announce(IPRODUCER, 0, LIGHTGREEN, "registering to get an id.");
 
     ProcessInformation producerInfo;
-    producerInfo.processType = PRODUCER_TYPE;
+
+    Configuration* configuration = new Configuration(CONFIGURATION_FILE);
+    producerInfo.processType = configuration->getInt(PRODUCER_TYPE);
+    string msg = "Reading configuration file --> PRODUCER_TYPE: ";
+   	Process::announce(RECEIVER_PROCESS, producerId, CYAN, (msg + Utils::intToString(producerInfo.processType)).c_str());
 
     register_and_get_id_result  *result_1 = registerandgetid_1(&producerInfo, clnt);
     if (result_1 == (register_and_get_id_result *) NULL) {
@@ -107,9 +118,7 @@ bool iProducer::thereAreConsumersFor(int itemType){
 		}
 	}
 
-	// TODO
-	//return thereAre;
-	return true;
+	return thereAre;
 }
 
 void iProducer::showProcessesResult(get_processes_result* getProcessesResult){
@@ -127,10 +136,16 @@ int iProducer::getRegisteredId() {
 NetworkMessage iProducer::buildNetworkMessage(ProductionOrder productionOrder,
 		ProcessInformation consumerProcess) {
 	NetworkMessage networkMessage;
-	networkMessage.to = SENDER_TYPE;
 	networkMessage.from = this->producerId;
 	networkMessage.processInformation = consumerProcess;
 	networkMessage.productionOrder = productionOrder;
+
+	Configuration* configuration = new Configuration(CONFIGURATION_FILE);
+	networkMessage.to = configuration->getInt(SENDER_TYPE);
+	string msg = "Reading configuration file --> SENDER_TYPE: ";
+
+	Process::announce(RECEIVER_PROCESS, producerId, CYAN, (msg + Utils::intToString(networkMessage.to)).c_str());
+
 	return networkMessage;
 }
 

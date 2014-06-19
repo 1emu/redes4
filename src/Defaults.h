@@ -9,14 +9,14 @@
 #define DEFAULTS_H_
 
 #define PATH "/home/"
-#define NETWORK_FILE "network.conf"
 
-#define PRODUCTION_ORDERS_QUEUE_ID 301
-#define SENDER_QUEUE_ID 305
-#define RECEIVER_QUEUE_ID 306
-#define PRODUCER_TYPE 5
-#define SENDER_TYPE 6
-#define RECEIVER_LISTENING_PORT 27015
+// Variables to read from the configuration file
+#define CONFIGURATION_FILE "defaults.conf"
+#define SENDER_QUEUE_ID "SENDER_QUEUE_ID"
+#define RECEIVER_QUEUE_ID "RECEIVER_QUEUE_ID"
+#define PRODUCER_TYPE "PRODUCER_TYPE"
+#define SENDER_TYPE "SENDER_TYPE"
+#define RECEIVER_LISTENING_PORT "RECEIVER_LISTENING_PORT"
 
 #define PRODUCER_PROCESS "PRODUCER PROCESS"
 #define CONSUMER_PROCESS "CONSUMER PROCESS"
@@ -25,7 +25,7 @@
 #define IPRODUCER "i_Producer"
 #define ICONSUMER "i_Consumer"
 
-#define CONFIGURATION_FILE ""
+#define NETWORK_FILE "network.conf"
 
 
 #define SLEEP_TIME_MAX 6
