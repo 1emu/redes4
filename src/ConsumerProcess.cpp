@@ -37,12 +37,12 @@ int main(int argc, char** argv) {
 	int amountOfProducers = atoi(argv[3]);
 	iConsumer* iface = new iConsumer(itemType);
 	id = iface->getRegisteredId();
+	ProductionOrder productionOrder;
 
 	Process::announce(CONSUMER_PROCESS, id, PURPLE, "initializing.");
-
+	
 	for(int i = 0; i < amountOfProductionOrders * amountOfProducers; i++){
 
-		ProductionOrder productionOrder;
 		productionOrder = iface->receiveFromProducer();
 
 		showProductionOrder(id, productionOrder, itemType);

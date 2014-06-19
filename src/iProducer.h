@@ -21,9 +21,8 @@ private:
     void showOutgoingOrder(ProductionOrder order, int itemType);
     void showProcessesResult(get_processes_result* getProcessesResult);
     bool thereAreConsumersFor(int itemType);
-    NetworkMessage buildNetworkMessage(QueueMessage queueMessage, ProcessInformation consumerProcess);
+    NetworkMessage buildNetworkMessage(ProductionOrder productionOrder, ProcessInformation consumerProcess);
     void showOutgoingNetworkMessage(NetworkMessage networkMessage);
-    QueueMessage buildQueueMessage(ProductionOrder order);
     void showOutgoingQueueMessage(QueueMessage queueMessage);
 };
 

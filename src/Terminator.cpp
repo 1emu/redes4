@@ -9,6 +9,7 @@
 #include "Queue.h"
 
 int main(){
+	//Queue::destroy(PRODUCTION_ORDERS_QUEUE_ID);
     Queue::destroy(RECEIVER_QUEUE_ID);
     Queue::destroy(SENDER_QUEUE_ID);
     std::string msg = "Termination complete.";

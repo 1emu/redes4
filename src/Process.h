@@ -26,10 +26,9 @@ public:
 
 	static std::string nameForItemType(int itemType);
 
-	static std::string showQueueMessage(QueueMessage queueMessage);
-
 	static std::string showNetworkMessage(NetworkMessage networkMessage);
 
+	static std::string showProductionOrder(const ProductionOrder& po);
 };
 
 #endif /* PROCESS_H_ */

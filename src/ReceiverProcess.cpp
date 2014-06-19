@@ -30,8 +30,7 @@ int main(int argc, char** argv) {
     Process::announce(RECEIVER_PROCESS, id, UNDERLINEDYELLOW, "initializing.");
 
     //Queue::create(PRODUCTION_ORDERS_QUEUE_ID);
-
-    QueueMessage queueMessage;
+	ProductionOrder productionOrder;
 	NetworkMessage networkMessage;
 	int bytes;
 
@@ -41,12 +40,12 @@ int main(int argc, char** argv) {
 	socket->passivate(RECEIVER_LISTENING_PORT);
 
 	Socket* newSocket;
-	while ((newSocket = socket->acceptOrCreateNew()) != NULL) {
+	while ( (newSocket = socket->acceptOrCreateNew()) != NULL) {
 		pid_t pid = fork();
 		if(pid == 0){
-			while((bytes = newSocket->receive((char*) &queueMessage, sizeof(queueMessage))) > 0){
-				notifyReceivedMessage(queueMessage, id);
-				queue->send((void*) &queueMessage, sizeof(queueMessage));
+			while((bytes = newSocket->receive((char*) &productionOrder, sizeof(productionOrder))) > 0){
+				Process::announce(RECEIVER_PROCESS, id, YELLOW, Process::showProductionOrder(productionOrder).c_str());
+				queue->send((void*) &productionOrder, sizeof(productionOrder));
 			}
 		}
 		else if(pid < 0) Process::announce(RECEIVER_PROCESS, id, RED, "error on fork");

@@ -14,6 +14,11 @@
 #include "RPC/IdManager.h"
 
 typedef struct{
+    long receiverId;
+    int amountOfItems[3];
+} ProductionOrder;
+
+typedef struct{
     long receiver;
     long sender;
     char receiverName[NAMES_LENGTH];
@@ -29,18 +34,13 @@ typedef struct{
     long to;
     long from;
     ProcessInformation processInformation;
-    QueueMessage queueMessage;
+    ProductionOrder productionOrder;
 } NetworkMessage;
 
 typedef struct{
     int action;
     ProcessInformation processInformation;
 } idControllerMessage;
-
-typedef struct{
-	long receiverId;
-	int amountOfItems[3];
-} ProductionOrder;
 
 enum Items {PROCESSOR, MOTHERBOARD, DISK};
 enum Actions {PRODUCE, END};

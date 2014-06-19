@@ -17,7 +17,7 @@ iConsumer::iConsumer(int consumerType)
     this->consumerType = consumerType;
     this->consumerId = registerAndGetId();
     ordersQueue = Queue::get(RECEIVER_QUEUE_ID);
-    // create connection with client
+    
     Process::announce(ICONSUMER, consumerId, LIGHTPURPLE, "created.");
 }
 
@@ -28,9 +28,12 @@ ProductionOrder iConsumer::receiveFromProducer() {
     receivedOrder.amountOfItems[PROCESSOR] = -1;
     receivedOrder.amountOfItems[MOTHERBOARD] = -1;
     receivedOrder.amountOfItems[DISK] = -1;
-    Process::announce(ICONSUMER, consumerId, LIGHTPURPLE, "receiving order.");
+    Process::announce(ICONSUMER, consumerId, LIGHTPURPLE, "waiting to receive order.");
+
     ordersQueue->receive(&receivedOrder, sizeof(receivedOrder), consumerId);
+    
     Process::announce(ICONSUMER, consumerId, LIGHTPURPLE, "order received.");
+
     return receivedOrder;
 }
 

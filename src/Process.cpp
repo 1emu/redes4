@@ -39,7 +39,7 @@ void Process::createProcesses(string processName, unsigned int amountOfProcesses
 	perrorForkString = processName + perrorForkString;
 
 	/* Create child processes */
-	for (int producerProcessNumber = 0 + 1;
+	for (unsigned int producerProcessNumber = 0 + 1;
 			producerProcessNumber <= amountOfProcesses; producerProcessNumber++) {
 		child = fork();
 		if (child == 0) {
@@ -64,22 +64,18 @@ string Process::nameForItemType(int itemType) {
 	return string("UNKNOWN ITEM TYPE");
 }
 
-string Process::showQueueMessage(QueueMessage queueMessage) {
-	string msg = "Queue message built: \n";
-	msg += string("- action: ") + Utils::intToString(queueMessage.action) + "\n";
-	msg += string("- amount: ") + Utils::intToString(queueMessage.amount) + "\n";
-	msg += string("- fromId: ") + Utils::intToString(queueMessage.fromId) + "\n";
-	msg += string("- receiver: ") +Utils::intToString(queueMessage.receiver) + "\n";
-	msg += string("- receiverName: ") + queueMessage.receiverName + "\n";
-	msg += string("- sender: ") + Utils::intToString(queueMessage.sender) + "\n";
-	msg += string("- senderClass: ") + Utils::intToString(queueMessage.senderClass) + "\n";
-	msg += string("- senderName: ") + queueMessage.senderName + "\n";
-	return msg;
-}
-
 string Process::showNetworkMessage(NetworkMessage networkMessage) {
 	string msg = "Network message built: \n";
 	msg += string("- from: ") + Utils::intToString(networkMessage.from) + "\n";
 	msg += string("- to: ") + Utils::intToString(networkMessage.to) + "\n";
 	return msg;
+}
+
+string Process::showProductionOrder(const ProductionOrder& po) {
+	string announcement = "Orden de Compra =[ "
+			+ Utils::intToString(po.amountOfItems[PROCESSOR]) + "P , "
+			+ Utils::intToString(po.amountOfItems[MOTHERBOARD])
+			+ " M , " + Utils::intToString(po.amountOfItems[DISK])
+			+ "D ]";
+	return announcement;
 }
