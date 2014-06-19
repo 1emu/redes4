@@ -51,7 +51,6 @@ int main(int argc, char** argv) {
     srand(time(NULL) * id);
 
     int amountOfProductionOrders = atoi(argv[1]);
-    //Queue::create(PRODUCTION_ORDERS_QUEUE_ID);
 
     iProducer* iface = new iProducer();
     id = iface->getRegisteredId();

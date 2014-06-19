@@ -17,6 +17,8 @@ public:
 
 	static std::string intToString(int i);
 
+	static std::string longToString(long l);
+
 	static int generateRandomNumberBetween(unsigned int min, unsigned int max);
 
 	static void writeout(std::string s);

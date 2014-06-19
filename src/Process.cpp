@@ -76,6 +76,7 @@ string Process::showProductionOrder(const ProductionOrder& po) {
 			+ Utils::intToString(po.amountOfItems[PROCESSOR]) + "P , "
 			+ Utils::intToString(po.amountOfItems[MOTHERBOARD])
 			+ " M , " + Utils::intToString(po.amountOfItems[DISK])
-			+ "D ]";
+			+ "D ] - receiver id #"
+			+ Utils::longToString(po.receiverId);
 	return announcement;
 }

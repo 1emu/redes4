@@ -13,6 +13,12 @@ std::string Utils::intToString(int i) {
 	return ss.str();
 }
 
+std::string Utils::longToString(long l) {
+	std::stringstream ss;
+	ss << l;
+	return ss.str();
+}
+
 void Utils::writeout(std::string s) {
 	s = s + "\n";
 	write(fileno(stdout), s.c_str(), s.size());

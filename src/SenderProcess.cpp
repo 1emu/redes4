@@ -32,9 +32,9 @@ void sendProductionOrders(int id, Queue* queue, Socket* socket) {
 		Process::announce(SENDER_PROCESS, id, UNDERLINEDYELLOW, "waiting orders from iProducer");
 		queue->receive((void*) &networkMessage, sizeof(networkMessage),	SENDER_TYPE);
 		productionOrder = networkMessage.productionOrder;
-		Process::announce(SENDER_PROCESS, id, UNDERLINEDYELLOW, "order received from iProducer");
+		Process::announce(SENDER_PROCESS, id, YELLOW, "order received from iProducer");
 		
-		Process::announce(SENDER_PROCESS, id, UNDERLINEDYELLOW, Process::showProductionOrder(productionOrder).c_str());
+		Process::announce(SENDER_PROCESS, id, YELLOW, Process::showProductionOrder(productionOrder).c_str());
 
 		//int result = socket->activate(string(networkMessage.processInformation.address), networkMessage.processInformation.port);
 		int result = socket->activate("localhost", RECEIVER_LISTENING_PORT);
@@ -43,7 +43,7 @@ void sendProductionOrders(int id, Queue* queue, Socket* socket) {
 		}
 		bytes = socket->send((char*) &productionOrder, sizeof(productionOrder));
 		
-		Process::announce(SENDER_PROCESS, id, UNDERLINEDYELLOW, "production order sent");
+		Process::announce(SENDER_PROCESS, id, YELLOW, "production order sent");
 		
 		socket->destroy();
 	} while (bytes >= 0);

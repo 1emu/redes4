@@ -11,7 +11,7 @@
 void notifyReceivedMessage(const QueueMessage& queueMessage, int id) {
 	std::string msg = "receiving from ";
 	msg += string(queueMessage.senderName) + " to "	+ string(queueMessage.receiverName);
-	Process::announce(RECEIVER_PROCESS, id, UNDERLINEDYELLOW, msg.c_str());
+	Process::announce(RECEIVER_PROCESS, id, YELLOW, msg.c_str());
 }
 
 int main(int argc, char** argv) {
