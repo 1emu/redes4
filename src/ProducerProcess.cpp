@@ -77,6 +77,7 @@ int main(int argc, char** argv) {
         Process::announce(PRODUCER_PROCESS, id, GREEN, "production order sent.");
 
         sleep(Process::sleepTime());
+
     }
 
     Process::announce(PRODUCER_PROCESS, id, UNDERLINEDGREEN, "finished.");

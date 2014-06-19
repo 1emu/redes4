@@ -17,7 +17,6 @@ iProducer::iProducer() {
 void iProducer::sendToConsumers(ProductionOrder order) {
 
     ProcessInformation* consumerProcesses;
-
     int consumerType;
     for (consumerType = PROCESSOR; consumerType <= DISK; consumerType++) {
     	consumerProcesses = getProcesses(consumerType);
@@ -26,8 +25,6 @@ void iProducer::sendToConsumers(ProductionOrder order) {
         Process::announce(IPRODUCER, 0, LIGHTGREEN, 
     			Utils::intToString(consumerProcess.processId).c_str());
     	while(consumerProcess.processId != 0){
-    		Process::announce(IPRODUCER, 0, LIGHTGREEN, 
-    			"asda");
     		order.receiverId = consumerProcess.processId;
 			showOutgoingOrder(order, consumerType);
 			NetworkMessage networkMessage = buildNetworkMessage(order,
@@ -110,7 +107,9 @@ bool iProducer::thereAreConsumersFor(int itemType){
 		}
 	}
 
-	return thereAre;
+	// TODO
+	//return thereAre;
+	return true;
 }
 
 void iProducer::showProcessesResult(get_processes_result* getProcessesResult){
@@ -128,7 +127,7 @@ int iProducer::getRegisteredId() {
 NetworkMessage iProducer::buildNetworkMessage(ProductionOrder productionOrder,
 		ProcessInformation consumerProcess) {
 	NetworkMessage networkMessage;
-	networkMessage.to = consumerProcess.processId;
+	networkMessage.to = SENDER_TYPE;
 	networkMessage.from = this->producerId;
 	networkMessage.processInformation = consumerProcess;
 	networkMessage.productionOrder = productionOrder;
