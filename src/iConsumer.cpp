@@ -53,7 +53,7 @@ int iConsumer::registerAndGetId()
     consumerInfo.processType = this->consumerType;
     consumerInfo.running = 1;
     //TODO: send running address and port
-    strncpy(consumerInfo.address, "localhost", sizeof(consumerInfo.address));
+    strncpy(consumerInfo.address, "127.0.0.1", sizeof(consumerInfo.address));
     consumerInfo.port = this->port;
 
     Process::announce(ICONSUMER, 0, LIGHTPURPLE, "registering to get an id.");

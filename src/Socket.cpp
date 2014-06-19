@@ -79,15 +79,26 @@ void Socket::setRemoteAddress(unsigned short port,
 	memcpy(&remoteAddress.sin_addr, remote_info->h_addr, remote_info->h_length);
 }
 
-int Socket::activate(string remote_name, unsigned short port){
-    this->port = port;
-    this->remoteName = remote_name;
-    struct hostent *remote_info = gethostbyname(remote_name.c_str());
+int Socket::activate(string remoteIpAddress, unsigned short port){
 
-    if((remote_info) == NULL){
-        notifyErrorOn("gethostbyname");
-        return -2;
-    }
+	string message = "Activating socket with address: ";
+	message += message + remoteIpAddress + " port: " + Utils::intToString((int) port);
+	Colors::writeout(message, BLUE);
+
+    this->port = port;
+	unsigned long int remoteIpAddressCSize = sizeof(remoteIpAddress.c_str());
+
+	const char *ipstr = remoteIpAddress.c_str();
+	struct in_addr ip;
+	struct hostent *remote_info;
+
+	if (!inet_aton(ipstr, &ip))
+			notifyErrorOn("inet_aton");
+
+	if ((remote_info = gethostbyaddr((const void *)&ip, sizeof ip, AF_INET)) == NULL){
+		notifyErrorOn("gethostbyaddr");
+		return -2;
+	}
 
 	setRemoteAddress(port, remote_info);
 
@@ -153,10 +164,13 @@ int Socket::destroy(){
 
 std::string Socket::socketInformation() {
 	std::string message = "Socket: \n";
-	message += "Local Name: " + this->localName + " Local Address: "
-			+ Utils::intToString(this->localAddress.sin_addr.s_addr) + "\n";
-	message += "Remote Name: " + this->remoteName + " Remote Address: "
-			+ Utils::intToString(this->remoteAddress.sin_addr.s_addr) + "\n";
+	message += "Local Name: " + this->localName
+			+ " Local Address: " + Utils::intToString(this->localAddress.sin_addr.s_addr)
+			+ "\n";
+	message += "Remote Name: " + this->remoteName
+			+ " Remote Address: " + Utils::intToString(this->remoteAddress.sin_addr.s_addr)
+			+ " Remote Port: " + Utils::intToString(this->port)
+			+ "\n";
 	return message;
 }
 
