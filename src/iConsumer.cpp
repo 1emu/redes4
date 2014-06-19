@@ -22,6 +22,10 @@ iConsumer::iConsumer(int consumerType)
 	string msg = "Reading configuration file --> RECEIVER_QUEUE_ID: ";
 	Process::announce(RECEIVER_PROCESS, consumerId, CYAN, (msg + Utils::intToString(receiverQueueId)).c_str());
 
+	this->port = configuration->getInt(RECEIVER_LISTENING_PORT);
+	msg = "Reading configuration file --> RECEIVER_LISTENING_PORT: ";
+	Process::announce(RECEIVER_PROCESS, consumerId, CYAN, (msg + Utils::intToString(port)).c_str());
+
     ordersQueue = Queue::get(receiverQueueId);
     
     Process::announce(ICONSUMER, consumerId, LIGHTPURPLE, "created.");
@@ -47,9 +51,10 @@ int iConsumer::registerAndGetId()
 {
     ProcessInformation consumerInfo;
     consumerInfo.processType = this->consumerType;
+    consumerInfo.running = 1;
     //TODO: send running address and port
     strncpy(consumerInfo.address, "localhost", sizeof(consumerInfo.address));
-    consumerInfo.port = 27015;
+    consumerInfo.port = this->port;
 
     Process::announce(ICONSUMER, 0, LIGHTPURPLE, "registering to get an id.");
 

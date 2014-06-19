@@ -18,6 +18,7 @@ private:
     Queue* senderQueue;
     int senderQueueId;
     int producerId;
+    int senderType;
     ProcessInformation* getProcesses(int type);
     void showOutgoingOrder(ProductionOrder order, int itemType);
     void showProcessesResult(get_processes_result* getProcessesResult);

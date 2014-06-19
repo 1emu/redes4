@@ -41,7 +41,8 @@ void sendProductionOrders(int id, Queue* queue, Socket* socket, int senderType) 
 		//TODO: use address and port from process information sent by id manager
 		// this information should be set in the consumer process
 		//int result = socket->activate("localhost", receiverListeningPort);
-		int result = socket->activate(string(networkMessage.processInformation.address), networkMessage.processInformation.port);
+		//int result = socket->activate(string(networkMessage.processInformation.address), networkMessage.processInformation.port);
+		int result = socket->activate(string("localhost"), 27015);
 
 		if(result != 0) {
 			Process::announce(SENDER_PROCESS, id, UNDERLINEDRED, "error on socket when sending production orders.");

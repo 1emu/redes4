@@ -25,6 +25,7 @@ private:
     int consumerId;
     int consumerType;
     int receiverQueueId;
+    int port;
     int registerAndGetId();
 };
 

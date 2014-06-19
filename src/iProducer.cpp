@@ -17,6 +17,11 @@ iProducer::iProducer() {
    	string msg = "Reading configuration file --> SENDER_QUEUE_ID: ";
    	Process::announce(RECEIVER_PROCESS, producerId, CYAN, (msg + Utils::intToString(senderQueueId)).c_str());
 
+	this->senderType = configuration->getInt(SENDER_TYPE);
+	msg = "Reading configuration file --> SENDER_TYPE: ";
+	Process::announce(RECEIVER_PROCESS, producerId, CYAN, (msg + Utils::intToString(senderType)).c_str());
+
+
     senderQueue = Queue::get(senderQueueId);
     Process::announce(IPRODUCER, producerId, LIGHTGREEN, "created.");
 }
@@ -136,16 +141,10 @@ int iProducer::getRegisteredId() {
 NetworkMessage iProducer::buildNetworkMessage(ProductionOrder productionOrder,
 		ProcessInformation consumerProcess) {
 	NetworkMessage networkMessage;
+	networkMessage.to = this->senderType;
 	networkMessage.from = this->producerId;
 	networkMessage.processInformation = consumerProcess;
 	networkMessage.productionOrder = productionOrder;
-
-	Configuration* configuration = new Configuration(CONFIGURATION_FILE);
-	networkMessage.to = configuration->getInt(SENDER_TYPE);
-	string msg = "Reading configuration file --> SENDER_TYPE: ";
-
-	Process::announce(RECEIVER_PROCESS, producerId, CYAN, (msg + Utils::intToString(networkMessage.to)).c_str());
-
 	return networkMessage;
 }
 
